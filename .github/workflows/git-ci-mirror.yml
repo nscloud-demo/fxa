@@ -7,6 +7,9 @@ jobs:
   git-mirror:
     runs-on: [nscloud-ubuntu-22.04-staging-amd64-2x4-with-cache, nscloud-git-mirror-5gb]
     steps:
+      - run: |
+          echo "hello" > file.txt
+
       - uses: namespacelabs/checkout@v0
         name: Checkout [Pull Request]
         if: ${{ github.event_name == 'pull_request' }}
@@ -27,6 +30,9 @@ jobs:
   actions-checkout:
     runs-on: [ubuntu-latest]
     steps:
+      - run: |
+          echo "hello" > file.txt
+
       - uses: actions/checkout@v4
         name: Checkout [Pull Request]
         if: ${{ github.event_name == 'pull_request' }}

@@ -17,15 +17,17 @@ jobs:
           # By default, PRs will be checked-out based on the Merge Commit, but we want the actual branch HEAD.
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          path: fxa
 
       - uses: namespacelabs/checkout@HEAD
         name: Checkout [Default Branch]
         if: ${{ github.event_name != 'pull_request' }}
         with:
           fetch-depth: 0
+          path: fxa
 
       - run: |
-          git log -10
+          cd fxa && git log -10
 
   actions-checkout:
     runs-on: [ubuntu-latest]

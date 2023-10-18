@@ -18,7 +18,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
-      - uses: namespacelabs/checkout@v0
+      - uses: namespacelabs/checkout@HEAD
         name: Checkout [Default Branch]
         if: ${{ github.event_name != 'pull_request' }}
         with:

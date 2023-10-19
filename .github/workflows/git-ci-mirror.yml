@@ -10,7 +10,7 @@ jobs:
       - run: |
           echo "hello" > file.txt
 
-      - uses: namespacelabs/nscloud-checkout-action@v0
+      - uses: namespacelabs/nscloud-checkout-action@HEAD
         name: Checkout [Pull Request]
         if: ${{ github.event_name == 'pull_request' }}
         with:
@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           path: repos/fxa
 
-      - uses: namespacelabs/nscloud-checkout-action@v0
+      - uses: namespacelabs/nscloud-checkout-action@HEAD
         name: Checkout [Default Branch]
         if: ${{ github.event_name != 'pull_request' }}
         with:

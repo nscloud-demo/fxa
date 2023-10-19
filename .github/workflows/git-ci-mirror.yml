@@ -1,5 +1,5 @@
 
-on: [workflow_dispatch]
+on: [workflow_dispatch, pull_request]
 
 name: demo-git-mirror
 
@@ -7,6 +7,8 @@ jobs:
   git-mirror:
     runs-on: [nscloud-ubuntu-22.04-staging-amd64-2x4-with-cache, nscloud-git-mirror-5gb]
     steps:
+      - run: |
+          echo "hello" > file.txt
       - uses: namespacelabs/nscloud-checkout-action@HEAD
         name: Checkout [Pull Request]
         if: ${{ github.event_name == 'pull_request' }}
@@ -14,19 +16,24 @@ jobs:
           # By default, PRs will be checked-out based on the Merge Commit, but we want the actual branch HEAD.
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          path: repos/fxa
 
       - uses: namespacelabs/nscloud-checkout-action@HEAD
         name: Checkout [Default Branch]
         if: ${{ github.event_name != 'pull_request' }}
         with:
           fetch-depth: 0
+          path: repos/fxa
 
       - run: |
-          git log -10
+          cd repos/fxa && git log -10
 
   actions-checkout:
     runs-on: [ubuntu-latest]
     steps:
+      - run: |
+          echo "hello" > file.txt
+
       - uses: actions/checkout@v4
         name: Checkout [Pull Request]
         if: ${{ github.event_name == 'pull_request' }}

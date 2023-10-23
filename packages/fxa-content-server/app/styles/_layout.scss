@@ -235,7 +235,6 @@
 #fxa-settings-header {
   align-items: center;
   display: flex;
-  justify-content: space-between;
   margin: 0 auto;
   white-space: nowrap;
   width: 100%;
@@ -256,13 +255,6 @@
 .fxa-404-p {
   line-height: 1.5em;
   margin: 0;
-}
-
-#static-footer {
-  align-items: center;
-  display: flex;
-  padding: 0 32px;
-  width: 100%;
 }
 
 #stage {

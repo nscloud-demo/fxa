@@ -109,11 +109,14 @@ const populateMetrics = async (properties: EventProperties) => {
     event[n].set(properties[n] || '');
   }
 
-  if (metricsContext.account?.uid) {
-    const hashedUid = await hashUid(metricsContext.account.uid);
-    userIdSha256.set(hashedUid);
-  } else {
-    userIdSha256.set('');
+  userIdSha256.set('');
+  try {
+    if (metricsContext.account?.uid) {
+      const hashedUid = await hashUid(metricsContext.account.uid);
+      userIdSha256.set(hashedUid);
+    }
+  } catch (e) {
+    // noop
   }
 
   oauthClientId.set(metricsContext.integration.data.clientId || '');
@@ -148,20 +151,29 @@ const createEventFn =
 
 export const GleanMetrics: Pick<GleanMetricsT, 'initialize' | 'setEnabled'> = {
   initialize: (config: GleanMetricsConfig, context: GleanMetricsContext) => {
-    if (config.enabled) {
-      Glean.initialize(config.applicationId, config.uploadEnabled, {
-        appDisplayVersion: config.appDisplayVersion,
-        channel: config.channel,
-        serverEndpoint: config.serverEndpoint,
-      });
-      Glean.setLogPings(config.logPings);
-      if (config.debugViewTag) {
-        Glean.setDebugViewTag(config.debugViewTag);
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1859629
+    // Starting with glean.js v2, accessing localStorage during
+    // initialization could cause an error
+    try {
+      if (config.enabled) {
+        Glean.initialize(config.applicationId, config.uploadEnabled, {
+          appDisplayVersion: config.appDisplayVersion,
+          channel: config.channel,
+          serverEndpoint: config.serverEndpoint,
+        });
+        Glean.setLogPings(config.logPings);
+        if (config.debugViewTag) {
+          Glean.setDebugViewTag(config.debugViewTag);
+        }
       }
+      GleanMetrics.setEnabled(config.enabled);
+      metricsContext = context;
+      ua = null;
+    } catch (_) {
+      // set some states so we won't try to do anything with glean.js later
+      config.enabled = false;
+      gleanEnabled = false;
     }
-    GleanMetrics.setEnabled(config.enabled);
-    metricsContext = context;
-    ua = null;
   },
 
   setEnabled: (enabled: boolean) => {

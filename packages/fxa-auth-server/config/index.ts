@@ -354,6 +354,12 @@ const convictConf = convict({
         env: 'MAILER_PORT',
       },
     },
+    brandMessagingMode: {
+      doc: 'The type of messaging to show. Options are prelaunch, postlaunch, or none',
+      format: String,
+      default: 'none',
+      env: 'BRAND_MESSAGING_MODE',
+    },
     host: {
       doc: 'SMTP host for sending email',
       default: 'localhost',
@@ -448,9 +454,9 @@ const convictConf = convict({
       env: 'REDIRECT_DOMAIN',
     },
     privacyUrl: {
-      doc: 'url to Mozilla privacy page',
+      doc: 'url to Mozilla Accounts privacy page',
       format: String,
-      default: 'https://www.mozilla.org/privacy',
+      default: 'https://www.mozilla.org/privacy/mozilla-accounts/',
     },
     passwordManagerInfoUrl: {
       doc: 'url to Firefox password manager information',
@@ -1663,7 +1669,7 @@ const convictConf = convict({
   totp: {
     serviceName: {
       doc: 'Default service name to appear in authenticator',
-      default: 'Firefox',
+      default: 'Mozilla',
       format: 'String',
       env: 'TOTP_SERVICE_NAME',
     },

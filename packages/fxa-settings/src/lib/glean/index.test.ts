@@ -147,6 +147,24 @@ describe('lib/glean', () => {
     });
   });
 
+  describe('initialization error', () => {
+    it('disables Glean', async () => {
+      const config = { ...mockConfig, enabled: true };
+      const initStub = sandbox.stub(Glean, 'initialize').throws();
+      GleanMetrics.initialize(config, mockMetricsContext);
+      sinon.assert.calledOnce(initStub);
+      expect(config.enabled).toBe(false);
+      GleanMetrics.registration.view();
+
+      await new Promise((resovle) =>
+        setTimeout(() => {
+          sinon.assert.notCalled(setuserIdSha256Stub);
+          resovle(undefined);
+        }, 20)
+      );
+    });
+  });
+
   describe('enabled', () => {
     it('calls Glean.initialize when enabled', () => {
       const initStub = sandbox.stub(Glean, 'initialize');
@@ -297,7 +315,9 @@ describe('lib/glean', () => {
         // the ping submissions are await'd internally in GleanMetrics...
         await new Promise((resovle) =>
           setTimeout(() => {
-            sinon.assert.calledOnce(setuserIdSha256Stub);
+            sinon.assert.calledTwice(setuserIdSha256Stub);
+            // it sets a default of '' first
+            sinon.assert.calledWith(setuserIdSha256Stub, '');
             sinon.assert.calledWith(
               setuserIdSha256Stub,
               '7ca0172850c53065046beeac3cdec3fe921532dbfebdf7efeb5c33d019cd7798'

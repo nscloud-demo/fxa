@@ -239,15 +239,12 @@ describe('Signup page', () => {
       fireEvent.input(screen.getByLabelText('Password'), {
         target: { value: MOCK_PASSWORD },
       });
-      fireEvent.blur(passwordInput);
       fireEvent.input(screen.getByLabelText('Repeat password'), {
         target: { value: MOCK_PASSWORD },
       });
-      fireEvent.blur(repeatPasswordInput);
       fireEvent.input(ageInput, {
         target: { value: age },
       });
-      fireEvent.blur(ageInput);
 
       await waitFor(() => {
         expect(
@@ -337,7 +334,6 @@ describe('Signup page', () => {
           `/confirm_signup_code${mockLocation().search}`,
           {
             state: {
-              email: MOCK_EMAIL,
               keyFetchToken: MOCK_KEY_FETCH_TOKEN,
               // we expect three newsletter options, but 4 slugs should be passed
               // because the first newsletter checkbox subscribes the user to 2 newsletters
@@ -381,7 +377,6 @@ describe('Signup page', () => {
         `/confirm_signup_code${mockLocation().search}`,
         {
           state: {
-            email: MOCK_EMAIL,
             keyFetchToken: MOCK_KEY_FETCH_TOKEN,
             selectedNewsletterSlugs: [],
             unwrapBKey: MOCK_UNWRAP_BKEY,

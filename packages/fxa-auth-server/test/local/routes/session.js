@@ -834,7 +834,7 @@ describe('/session/duplicate', () => {
       const sessionTokenOptions = db.createSessionToken.args[0][0];
       assert.equal(
         Object.keys(sessionTokenOptions).length,
-        36,
+        37,
         'was called with correct number of options'
       );
       assert.equal(
@@ -957,7 +957,7 @@ describe('/session/duplicate', () => {
       const sessionTokenOptions = db.createSessionToken.args[0][0];
       assert.equal(
         Object.keys(sessionTokenOptions).length,
-        36,
+        37,
         'was called with correct number of options'
       );
       assert.equal(
@@ -1329,8 +1329,8 @@ describe('/session/verify/send_push', () => {
     const args = push.notifyVerifyLoginRequest.args[0];
     assert.equal(args[0], 'foo');
     assert.deepEqual(args[1], []);
-    assert.equal(args[2].title, 'Logging in to Firefox accounts?');
-    assert.equal(args[2].body, 'Click here to verify it’s you');
+    assert.equal(args[2].title, 'Logging in to your Mozilla account?');
+    assert.equal(args[2].body, 'Click here to confirm it’s you');
     assert.include(args[2].url, 'sometoken');
     assert.include(args[2].url, 'California');
     assert.include(args[2].url, encodeURIComponent('63.245.221.32'));

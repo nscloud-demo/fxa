@@ -99,7 +99,7 @@ const Signup = ({
 
   const { handleSubmit, register, getValues, errors, formState, trigger } =
     useForm<SignupFormData>({
-      mode: 'onBlur',
+      mode: 'onChange',
       criteriaMode: 'all',
       defaultValues: {
         email: queryParamModel.email,
@@ -189,7 +189,6 @@ const Signup = ({
 
         navigate(`/confirm_signup_code${location.search}`, {
           state: {
-            email: queryParamModel.email,
             selectedNewsletterSlugs,
             keyFetchToken: data.SignUp.keyFetchToken,
             unwrapBKey: data.unwrapBKey,

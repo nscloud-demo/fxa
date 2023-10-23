@@ -17,7 +17,7 @@ const {
 const { productDetailsFromPlan } = require('fxa-shared').subscriptions.metadata;
 const Renderer = require('./renderer').default;
 const { NodeRendererBindings } = require('./renderer/bindings-node');
-const { determineLocale } = require('@fxa/shared/l10n');
+const { determineLocale } = require('../../../../libs/shared/l10n/src');
 
 const TEMPLATE_VERSIONS = require('./emails/templates/_versions.json');
 
@@ -390,6 +390,13 @@ module.exports = function (log, config, bounces) {
   };
 
   Mailer.prototype.send = async function (message) {
+    // Make sure brandMessagingMode always reflects the current config state.
+
+    if (message && message.templateValues) {
+      message.templateValues.brandMessagingMode =
+        config.smtp.brandMessagingMode;
+    }
+
     log.trace(`mailer.${message.template}`, {
       email: message.email,
       uid: message.uid,

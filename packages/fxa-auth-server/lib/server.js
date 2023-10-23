@@ -19,7 +19,7 @@ const { HEX_STRING } = require('./routes/validators');
 const { configureSentry } = require('./sentry');
 const { swaggerOptions } = require('../docs/swagger/swagger-options');
 const { Account } = require('fxa-shared/db/models/auth');
-const { determineLocale } = require('@fxa/shared/l10n');
+const { determineLocale } = require('../../../libs/shared/l10n/src');
 const {
   reportValidationError,
 } = require('fxa-shared/sentry/report-validation-error');
@@ -131,7 +131,7 @@ async function create(log, error, config, routes, db, statsd, glean) {
     routes: {
       cors: {
         additionalExposedHeaders: ['Timestamp', 'Accept-Language'],
-        additionalHeaders: ['sentry-trace'],
+        additionalHeaders: ['sentry-trace', 'baggage'],
         // If we're accepting CORS from any origin then use Hapi's "ignore" mode,
         // which is more forgiving of missing Origin header.
         origin: config.corsOrigin[0] === '*' ? 'ignore' : config.corsOrigin,

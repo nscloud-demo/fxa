@@ -9,7 +9,6 @@ jobs:
     steps:
       - run: |
           echo "hello" > file.txt
-
       - uses: namespacelabs/nscloud-checkout-action@HEAD
         name: Checkout [Pull Request]
         if: ${{ github.event_name == 'pull_request' }}
